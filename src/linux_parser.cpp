@@ -21,11 +21,11 @@ float CLOCKTICKS(){
 
 // Helper function to read key - value from file as suggested by code-review
 template <typename T>
-T findValueByKey(std::string const &keyFilter, std::string const &filename) {
+T findValueByKey(std::string const& keyFilter, std::string const& filename) {
   std::string line, key;
   T value;
 
-  std::ifstream stream(kProcDirectory + filename);
+  std::ifstream stream(LinuxParser::kProcDirectory + filename);
   if (stream.is_open()) {
     while (std::getline(stream, line)) {
       std::istringstream linestream(line);
@@ -45,7 +45,7 @@ T getValueOfFile(std::string const &filename) {
   std::string line;
   T value;
 
-  std::ifstream stream(kProcDirectory + filename);
+  std::ifstream stream(LinuxParser::kProcDirectory + filename);
   if (stream.is_open()) {
     std::getline(stream, line);
     std::istringstream linestream(line);
@@ -126,7 +126,7 @@ float LinuxParser::MemoryUtilization() {
 // DONE: Read and return the system uptime
 long LinuxParser::UpTime() { 
 
-  float upTime = getValueOfFile<float>(kUptimeFilename)
+  long upTime = getValueOfFile<float>(kUptimeFilename);
   return upTime;
 
 }
@@ -255,7 +255,7 @@ int LinuxParser::RunningProcesses() {
   string line;
   string str1;
   string str2;
-  int proc_count = getValueOfFile<int>(filterRunningProcesses, kStatFilename);
+  int proc_count = findValueByKey<int>(filterRunningProcesses, kStatFilename);
 
   return proc_count;
  }
@@ -320,7 +320,7 @@ string LinuxParser::Uid(int pid) {
     while(std::getline(stream, line)){
       std::istringstream linestream(line);
       linestream >> first >> secnd;
-      if(first == filterUid){
+      if(first == filterUID){
         user_id = secnd;
       }
     }
