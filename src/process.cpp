@@ -26,7 +26,11 @@ float Process::CpuUtilization() const {
 
 // DONE: Return the command that generated this process
 string Process::Command() { 
-    return LinuxParser::Command(pid);
+    string command = LinuxParser::Command(pid);
+    if(command.size()>43){
+        command = command.substr(0,40) + "...";
+    }
+    return  command; // 02282022 - only send 40 characters as suggested by code review
 }
 
 // DONE: Return this process's memory utilization
@@ -41,7 +45,7 @@ string Process::User() {
 
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() { 
-    return LinuxParser::UpTime(pid);
+    return LinuxParser::UpTime() - LinuxParser::UpTime(pid); // 02282022 - fix calculation
 }
 
 // TODO: Overload the "less than" comparison operator for Process objects

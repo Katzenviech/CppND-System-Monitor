@@ -22,9 +22,9 @@ Processor& System::Cpu() {
 
 vector<Process>& System::Processes() { 
     processes_.clear();
-    auto pids = LinuxParser::Pids();
-    for(auto pid : pids){
-        processes_.push_back(Process(pid));
+    const auto& pids = LinuxParser::Pids();
+    for(const auto& pid : pids){
+        processes_.emplace_back(pid);
     }
     std::sort(processes_.begin(), processes_.end());
     return processes_;
